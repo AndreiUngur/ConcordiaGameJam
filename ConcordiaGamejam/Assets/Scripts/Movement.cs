@@ -5,8 +5,10 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
     public float maxSpeed = 10f;
     public float jumpForce = 300f;
+    public bool isFacingRight = true;
 
     private Rigidbody2D rb2d;
+    private SpriteRenderer spriteRenderer;
     public Transform GroundCheck;
     public LayerMask groundLayer;
     private bool isGrounded;
@@ -15,6 +17,7 @@ public class Movement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         rb2d = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
 	void Update()
@@ -22,6 +25,9 @@ public class Movement : MonoBehaviour {
         if (isGrounded && Input.GetKeyDown(KeyCode.X)) {
             rb2d.AddForce(new Vector2(0, jumpForce));
         }
+
+        spriteRenderer.color = isFacingRight ? Color.cyan : Color.blue;
+
 	}
 
 	void FixedUpdate () {
@@ -31,6 +37,12 @@ public class Movement : MonoBehaviour {
         // side to side movement
         float moveH = Input.GetAxis("Horizontal");
         rb2d.velocity = new Vector2(moveH*maxSpeed, rb2d.velocity.y);
+
+        if (isFacingRight && moveH < 0) {
+            isFacingRight = false;
+        } else if (!isFacingRight && moveH > 0) {
+            isFacingRight = true;
+        }
 
         Debug.Log("Grounded: " + isGrounded);
 	}
