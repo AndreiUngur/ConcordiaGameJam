@@ -99,6 +99,16 @@ public class RobotBehavior : MonoBehaviour {
 		//basicShot.GetComponent<Rigidbody2D>().velocity = new Vector2(playerRbd.velocity.x, playerRbd.velocity.y);
 	}
 
+	void OnTriggerEnter2D(Collider2D otherCollider)
+    {
+        // Is this a shot?
+        GameObject other = otherCollider.gameObject;
+        if (other.tag == "")
+        {
+			
+        }
+    }
+
 	// Update is called once per frame
 	void Update ()
 	{
