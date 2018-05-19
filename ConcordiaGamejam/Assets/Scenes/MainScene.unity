@@ -122,11 +122,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -1.01
+      value: -6.32
       objectReference: {fileID: 0}
     - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.44
+      value: -0.51
       objectReference: {fileID: 0}
     - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
       propertyPath: m_LocalPosition.z
@@ -730,7 +730,7 @@ GameObject:
   - component: {fileID: 2018889744}
   m_Layer: 0
   m_Name: health
-  m_TagString: Untagged
+  m_TagString: robotHealth
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

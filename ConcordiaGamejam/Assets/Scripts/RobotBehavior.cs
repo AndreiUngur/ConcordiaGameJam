@@ -9,11 +9,14 @@ public class RobotBehavior : MonoBehaviour {
 	// SHOOTING
 	public GameObject bullet;
 	public int shootFreq;
+	public float damage = 0.1f;
+	private bool isDead;
 	/*
 	private float fireRate;
 	private float damage;
 	private LayerMask notToHit;
 	*/
+	private GameObject healthbar;
 	private int nextUpdate=1;
 	private Vector2 lastPos;
 	private Camera cam;
@@ -29,14 +32,16 @@ public class RobotBehavior : MonoBehaviour {
 		//GENERIC
 		robot = GetComponent<Rigidbody2D>();
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+		
 		// MOVEMENT
 		lastPos = cam.WorldToViewportPoint(robot.position);
-
 		playerObject = GameObject.FindGameObjectWithTag("Player");
-
 		player = playerObject.GetComponent<Transform>();
 
+		// COLLISION & DAMAGE
+		isDead = false;
 		Physics2D.IgnoreCollision(playerObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+		healthbar = GameObject.FindGameObjectWithTag("robotHealth");
 
 	}
 	
@@ -103,15 +108,27 @@ public class RobotBehavior : MonoBehaviour {
     {
         // Is this a shot?
         GameObject other = otherCollider.gameObject;
-        if (other.tag == "")
+        if (other.tag == "playerBullet")
         {
-			
+			if(healthbar.transform.localScale.x <= 0.0f)
+			{
+				Debug.Log("Robot got KILLED.");
+				isDead = true;
+				return;
+			}
+			healthbar.transform.localScale = new Vector2(healthbar.transform.localScale.x - damage, healthbar.transform.localScale.y);
         }
     }
 
 	// Update is called once per frame
 	void Update ()
 	{
+		if(isDead)
+		{
+			Debug.Log("Robot died. :(");
+			Physics2D.IgnoreCollision(playerObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+			return;
+		}
 		// If the robot is too far, it'll have more chances of doing "earthquake" type attacks
 		// If the robot is close, it'll have more chances of doing "melee" type attacks
 		float distance = Vector3.Distance(transform.position, player.position);
