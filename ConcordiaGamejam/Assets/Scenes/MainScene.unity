@@ -493,7 +493,7 @@ MonoBehaviour:
   GroundCheck: {fileID: 1573236728}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
 --- !u!114 &658460365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,7 +506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullets: []
-  prefab: {fileID: 0}
+  prefab: {fileID: 1887545743327096, guid: 600b9c72646905449bae5eb3cd13375c, type: 2}
   poolSize: 30
 --- !u!114 &658460366
 MonoBehaviour:
