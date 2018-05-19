@@ -76,6 +76,36 @@ public class RobotBehavior : MonoBehaviour {
 	{
 		GameObject basicShot = (GameObject)Instantiate (bullet, robot.transform.position, player.transform.rotation);
 	}
+
+
+	// 2. Earthquake
+	private static bool earthquakeTime()
+	{
+		int randomNumber = Mathf.RoundToInt(Random.value*120);
+		if(randomNumber == 1)
+		{
+			Debug.Log("Earthquake Time!");
+			return true;
+		}
+		return false;
+	}
+
+	private static void earthquake()
+	{
+		GameObject mainCamera = GameObject.Find("Main Camera");
+		CameraShake camShakeScript = mainCamera.GetComponent<CameraShake>();
+		camShakeScript.shakeDuration = 1.0f;
+		/*
+		I thought this would work but it doesn't. 
+		Debug.Log("EARTHQUAKE!!!!!");
+		GameObject[] floorTiles = GameObject.FindGameObjectsWithTag("floorTile");
+        foreach (GameObject tile in floorTiles)
+        {
+			Rigidbody2D tileRigidbody = tile.GetComponent<Rigidbody2D>();
+			tileRigidbody.velocity = tile.transform.up * 5.0f;
+        }
+		*/
+	}
 	// ----------------------------------------------------------------------
 
 	// BELOW ARE UNITY FUNCTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -129,6 +159,10 @@ public class RobotBehavior : MonoBehaviour {
 			shootBasic(robot, player, bullet);
 		}
 
+		if(earthquakeTime())
+		{
+			earthquake();
+		}
 		// "Basic" AI that follows the player
 		FollowAI(player, transform, robot, speed);
 
