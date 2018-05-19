@@ -122,11 +122,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 5.85
+      value: -6.09
       objectReference: {fileID: 0}
     - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.62
+      value: -0.56
       objectReference: {fileID: 0}
     - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
       propertyPath: m_LocalPosition.z
@@ -159,7 +159,7 @@ Prefab:
     - target: {fileID: 114617567935747638, guid: 3588c77c46a722f459ced2b9c34ef30d,
         type: 2}
       propertyPath: speed
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114617567935747638, guid: 3588c77c46a722f459ced2b9c34ef30d,
         type: 2}
@@ -167,6 +167,41 @@ Prefab:
       value: 
       objectReference: {fileID: 1791100109571726, guid: 58aaf3b8533ca884e9cc7f4c76604e01,
         type: 2}
+    - target: {fileID: 50714296145169292, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: m_Mass
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114617567935747638, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 658460362}
+    - target: {fileID: 50714296145169292, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: m_GravityScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 61963888733062484, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: m_Offset.y
+      value: -0.010650918
+      objectReference: {fileID: 0}
+    - target: {fileID: 61963888733062484, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 0.9644972
+      objectReference: {fileID: 0}
+    - target: {fileID: 61963888733062484, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 50714296145169292, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
   m_IsPrefabParent: 0
@@ -331,7 +366,7 @@ GameObject:
   - component: {fileID: 658460364}
   m_Layer: 0
   m_Name: Guy
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -408,7 +443,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 658460359}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.846, y: -1.38, z: 0}
+  m_LocalPosition: {x: 7.07, y: -3.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1573236728}
@@ -454,7 +489,7 @@ MonoBehaviour:
   maxSpeed: 10
   jumpForce: 300
   isFacingRight: 1
-  GroundCheck: {fileID: 0}
+  GroundCheck: {fileID: 1573236728}
   groundLayer:
     serializedVersion: 2
     m_Bits: 0

@@ -18,17 +18,25 @@ public class RobotBehavior : MonoBehaviour {
 	private Vector2 lastPos;
 	private Camera cam;
 	private BoxCollider2D boxCollider;
-	private Rigidbody2D rigidBody;
+	private Rigidbody2D robot;
+	private GameObject playerObject;
+	private Transform player;
 	//public Transform target;
 	// Use this for initialization
 	
 	void Start ()
 	{
 		//GENERIC
-		rigidBody = GetComponent<Rigidbody2D>();
+		robot = GetComponent<Rigidbody2D>();
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 		// MOVEMENT
-		lastPos = cam.WorldToViewportPoint(rigidBody.position);
+		lastPos = cam.WorldToViewportPoint(robot.position);
+
+		playerObject = GameObject.FindGameObjectWithTag("Player");
+
+		player = playerObject.GetComponent<Transform>();
+
+		Physics2D.IgnoreCollision(playerObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
 
 	}
 	
@@ -52,30 +60,20 @@ public class RobotBehavior : MonoBehaviour {
 		rigidBody.velocity = new Vector2(rigidBody.velocity.x, -1.0f*speed);
 	}
 
-	private static void MovementHandler(Vector2 pos, Rigidbody2D rigidBody, float speed)
-	{	
-		if(pos.x < 0.5)
-		{
-			MoveRight(rigidBody, speed);
-			Debug.Log("Moving right");
-		}
-		// Right of camera
-		if(0.5 < pos.x)
-		{
-			MoveLeft(rigidBody, speed);
-			Debug.Log("Moving left");
-		}
-		// Left of camera
-		// Below camera
-		if(pos.y < 0.5)
-		{
-			//MoveUp(rigidBody, speed);
-		}
-		// Above camera
-		if(0.5 < pos.y)
-		{
-			//MoveDown(rigidBody, speed);
-		}
+	private static void MovementHandler(Transform player, Transform robot, Rigidbody2D robotrb2d, float speed)
+	{
+		Vector2 velocity = new Vector2((robot.position.x - player.position.x) * speed, robotrb2d.velocity.y);
+        robot.GetComponent<Rigidbody2D>().velocity = -velocity;	
+		/*
+		robot.LookAt(player);
+		robot.Rotate(new Vector3(0,-90,0),Space.Self);//correcting the original rotation
+        //robot.position = Vector2.MoveTowards(robot.position,player.transform.position, speed*Time.deltaTime); 
+         
+         //move towards the player
+         if (Vector3.Distance(robot.position,player.position)>1f){//move if distance from target is greater than 1
+             robot.Translate(new Vector3(speed* Time.deltaTime, 0) );
+         }
+		 */
 	}
 
 	private static bool directionChange(float lastPos, float Pos)
@@ -87,23 +85,28 @@ public class RobotBehavior : MonoBehaviour {
 	{
 		if(Mathf.RoundToInt(Random.value*10) == 1)
 		{
-			return true;
 			Debug.Log("Shooting Time!");
+			return true;
 		}
 		return false;
 	}
 
-	private static void shootBasic(Rigidbody2D rigidBody, GameObject bullet)
+	private static void shootBasic(Rigidbody2D robot, Transform player, GameObject bullet)
 	{
 		// (Rotation is temporary)
-		GameObject basicShot = (GameObject)Instantiate (bullet, rigidBody.transform.position, rigidBody.transform.rotation);
-		MoveLeft(basicShot.GetComponent<Rigidbody2D>(), 10f);
+		GameObject basicShot = (GameObject)Instantiate (bullet, robot.transform.position, player.transform.rotation);
+		//basicShot.transform.position = new Vector2(robot.position.x, player.position.y);
+		//basicShot.GetComponent<Rigidbody2D>().velocity = new Vector2(playerRbd.velocity.x, playerRbd.velocity.y);
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
-		Vector2 pos = cam.WorldToViewportPoint(rigidBody.position);
+		// If the robot is too far, it'll have more chances of doing "earthquake" type attacks
+		// If the robot is close, it'll have more chances of doing "melee" type attacks
+		float distance = Vector3.Distance(transform.position, player.position);
+
+		Vector2 cameraPos = cam.WorldToViewportPoint(player.position);
 		//if (directionChange(lastPos, pos))
 		//{
 			/*
@@ -116,13 +119,13 @@ public class RobotBehavior : MonoBehaviour {
 			*/
 		//}
 
-		lastPos = pos;
+		lastPos = cameraPos;
  
 		if (shootingTime())
 		{
-			shootBasic(rigidBody, bullet);
+			shootBasic(robot, player, bullet);
 		}
-	
-		MovementHandler(pos, rigidBody, speed);
+
+		MovementHandler(player, transform, robot, speed);
 	}
 }

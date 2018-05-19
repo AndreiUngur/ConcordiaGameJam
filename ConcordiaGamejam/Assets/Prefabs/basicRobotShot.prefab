@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212662062443215678}
   - component: {fileID: 61413974949300220}
   - component: {fileID: 50230271790846644}
+  - component: {fileID: 114512176762031004}
   m_Layer: 0
   m_Name: basicRobotShot
   m_TagString: Untagged
@@ -87,6 +88,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &114512176762031004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1791100109571726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307604249d40c2248a1d7f0b0ac67608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletDamage: 0
+  bulletSpeed: 10
 --- !u!212 &212662062443215678
 SpriteRenderer:
   m_ObjectHideFlags: 1
