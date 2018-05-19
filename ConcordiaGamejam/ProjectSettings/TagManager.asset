@@ -13,8 +13,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Ground
+  - BG
   - 
   - 
   - 
@@ -38,6 +38,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BG
+    uniqueID: 2581754001
+    locked: 0
+  - name: Ground
+    uniqueID: 3970140699
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
