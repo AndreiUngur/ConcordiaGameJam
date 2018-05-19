@@ -389,6 +389,8 @@ GameObject:
   - component: {fileID: 658460360}
   - component: {fileID: 658460363}
   - component: {fileID: 658460364}
+  - component: {fileID: 658460366}
+  - component: {fileID: 658460365}
   m_Layer: 0
   m_Name: Guy
   m_TagString: Player
@@ -511,13 +513,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06076aaf80c14a56a85ce9596fd1821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 10
-  jumpForce: 300
-  isFacingRight: 1
+  maxSpeed: 6
+  jumpForce: 5000
   GroundCheck: {fileID: 1573236728}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
+--- !u!114 &658460365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 658460359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f7f2521a51c7e479f4a74531612060, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullets: []
+  prefab: {fileID: 1887545743327096, guid: 600b9c72646905449bae5eb3cd13375c, type: 2}
+  poolSize: 30
+--- !u!114 &658460366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 658460359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b975a23b95b626f4dbc469e1eea0ff56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 0}
 --- !u!1 &1378999576
 GameObject:
   m_ObjectHideFlags: 0
