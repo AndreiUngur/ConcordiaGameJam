@@ -113,6 +113,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &21788265
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 5.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207667337649992, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1423619153605886, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
+      propertyPath: m_Name
+      value: Robot
+      objectReference: {fileID: 0}
+    - target: {fileID: 114617567935747638, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114617567935747638, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 1791100109571726, guid: 58aaf3b8533ca884e9cc7f4c76604e01,
+        type: 2}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,13 +451,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06076aaf80c14a56a85ce9596fd1821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 6
-  jumpForce: 5000
+  maxSpeed: 10
+  jumpForce: 300
   isFacingRight: 1
-  GroundCheck: {fileID: 1573236728}
+  GroundCheck: {fileID: 0}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
 --- !u!1 &1378999576
 GameObject:
   m_ObjectHideFlags: 0

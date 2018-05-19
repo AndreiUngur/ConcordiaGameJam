@@ -95,8 +95,9 @@ public class RobotBehavior : MonoBehaviour {
 
 	private static void shootBasic(Rigidbody2D rigidBody, GameObject bullet)
 	{
-		GameObject basicShot = (GameObject)Instantiate (bullet, rigidBody.transform.position);
-		MoveRight(basicShot.GetComponent<Rigidbody2D>(), 10f);
+		// (Rotation is temporary)
+		GameObject basicShot = (GameObject)Instantiate (bullet, rigidBody.transform.position, rigidBody.transform.rotation);
+		MoveLeft(basicShot.GetComponent<Rigidbody2D>(), 10f);
 	}
 
 	// Update is called once per frame
