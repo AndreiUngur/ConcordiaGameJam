@@ -9,11 +9,11 @@ public class BulletPool : MonoBehaviour {
     public List<GameObject> bullets;
     public GameObject prefab;
     public int poolSize;
+    private int curr = 0;
 
     // Use this for initialization
     void Start()
     {
-        Debug.Log("Starting");
         if (pool == null)
         {
             pool = this;
@@ -29,16 +29,15 @@ public class BulletPool : MonoBehaviour {
 
     public GameObject GetBullet()
     {
-        Debug.Log("retrieving");
-        for(int i = 0; i < bullets.Count; i++)
-        {
-            if (!bullets[i].activeInHierarchy)
-            {
-                return bullets[i];
-            }
+
+        if (curr == bullets.Count) {
+            curr = 0;
         }
 
-        return null;
+        GameObject go = bullets[curr];
+        curr++;
+        return go;
+
     }
 
 

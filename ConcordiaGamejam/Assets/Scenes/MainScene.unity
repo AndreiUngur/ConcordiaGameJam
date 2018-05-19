@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 336007677}
   - component: {fileID: 336007678}
+  - component: {fileID: 336007679}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -154,6 +155,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prefab: {fileID: 50091032290440030, guid: 600b9c72646905449bae5eb3cd13375c, type: 2}
+--- !u!114 &336007679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 336007676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f7f2521a51c7e479f4a74531612060, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullets: []
+  prefab: {fileID: 1887545743327096, guid: 600b9c72646905449bae5eb3cd13375c, type: 2}
+  poolSize: 100
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,7 +453,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 6
   jumpForce: 5000
-  isFacingRight: 1
   GroundCheck: {fileID: 1573236728}
   groundLayer:
     serializedVersion: 2

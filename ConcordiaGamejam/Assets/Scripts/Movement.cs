@@ -5,7 +5,8 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
     public float maxSpeed = 10f;
     public float jumpForce = 300f;
-    public bool isFacingRight = true;
+    public static bool isFacingRight = true;
+    public static Vector2 direction = new Vector2(0,0);
 
     private Rigidbody2D rb2d;
     private SpriteRenderer spriteRenderer;
@@ -44,6 +45,6 @@ public class Movement : MonoBehaviour {
             isFacingRight = true;
         }
 
-        Debug.Log("Grounded: " + isGrounded);
+        direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
 	}
 }

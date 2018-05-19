@@ -7,22 +7,21 @@ public class Bullet : MonoBehaviour {
 
 
     public Vector2 Direction { get; set; }
+    public float bulletVelocity = 10f;
 
     private Rigidbody2D bullet;
 
 
     // Use this for initialization
     void Start () {
-        //temp
-        Direction.Set(1, 0);
         bullet = GetComponent<Rigidbody2D>();
+        init();
 
     }
 
     private void FixedUpdate()
     {
-        bullet.velocity = new Vector2(10, 0);
-
+        bullet.velocity = Direction * bulletVelocity;
     }
 
     // Update is called once per frame
@@ -35,4 +34,19 @@ public class Bullet : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
+	private void OnBecameVisible()
+	{
+        init();
+	}
+
+	public void init() {
+        if (Movement.direction.magnitude < 0.1)
+        {
+            Direction = new Vector2(Movement.isFacingRight ? 1 : -1, 0);
+        }
+        else
+        {
+            Direction = Movement.direction;
+        }
+    }
 }

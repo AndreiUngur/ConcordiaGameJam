@@ -26,11 +26,8 @@ public class Gun : MonoBehaviour {
         if (FirePressed && LastFired <= 0)
         {
             GameObject bullet = BulletPool.pool.GetBullet();
-            if (bullet != null)
-            {
-                bullet.SetActive(true);
-                bullet.transform.position = transform.position + new Vector3(1, 0, 0);
-            }
+            bullet.SetActive(true);
+            bullet.transform.position = transform.position;
             LastFired = FireDelay;
         }
 	}
