@@ -447,6 +447,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1573236728}
+  - {fileID: 336007677}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -486,9 +487,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06076aaf80c14a56a85ce9596fd1821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 10
-  jumpForce: 300
-  isFacingRight: 1
+  maxSpeed: 6
+  jumpForce: 5000
   GroundCheck: {fileID: 1573236728}
   groundLayer:
     serializedVersion: 2
