@@ -6,6 +6,7 @@ public class RobotBehavior : MonoBehaviour {
 	// MOVING
 	public float speed;
 	private Vector2 lastPos;
+    private bool isFacingRight = true;
 	
 	// ATTACKING
 	public GameObject bullet;
@@ -20,6 +21,7 @@ public class RobotBehavior : MonoBehaviour {
 	
 	// ROBOT
 	private Rigidbody2D robot;
+    private SpriteRenderer spriteRenderer;
 	private GameObject healthbar;
 	private int nextUpdate=1;
 	private bool following;
@@ -167,7 +169,8 @@ public class RobotBehavior : MonoBehaviour {
 	void Start ()
 	{
 		//GENERIC
-		robot = GetComponent<Rigidbody2D>();
+        robot = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 		
 		// MOVEMENT
@@ -272,5 +275,13 @@ public class RobotBehavior : MonoBehaviour {
 			*/
 		//}
 		lastPos = cameraPos;
+
+        // Always make sprite face player
+        spriteRenderer.flipX = !isFacingRight;
+	}
+
+	void FixedUpdate()
+	{
+        isFacingRight = (transform.position.x < player.position.x);
 	}
 }
