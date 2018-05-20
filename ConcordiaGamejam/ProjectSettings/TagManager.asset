@@ -10,6 +10,7 @@ TagManager:
   - Robot
   - Damaging
   - floorTile
+  - MainCanvas
   layers:
   - Default
   - TransparentFX

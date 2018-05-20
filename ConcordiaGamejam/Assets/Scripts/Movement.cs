@@ -92,7 +92,6 @@ public class Movement : MonoBehaviour {
 
         direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
     
-
         if (direction.y > 0.01) {
             aimLevel = 1;
         } else if (direction.y < -0.01) {

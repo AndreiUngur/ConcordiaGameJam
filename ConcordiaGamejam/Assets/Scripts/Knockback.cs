@@ -5,7 +5,6 @@ using UnityEngine;
 public class Knockback : MonoBehaviour {
 
     public float kbScale = 70f;
-    public SpriteRenderer testSprite;
 
     GameObject knockback;
     GameObject Player;
@@ -43,9 +42,11 @@ public class Knockback : MonoBehaviour {
 
     private void FixedUpdate()
     {
+
         if (movement.isGrounded && movement.isKnockedBack && delayElapsed <= 0)
         {
             movement.isKnockedBack = false;
+
 
         }
     }
@@ -55,7 +56,6 @@ public class Knockback : MonoBehaviour {
 
         if (collision.gameObject.tag == "Robot" && movement.iframes <= 0)
         {
-            Debug.Log("kbed-----------------------------------------");
 
             float dist = Mathf.Abs(collision.gameObject.transform.position.x - gameObject.transform.position.x);
 

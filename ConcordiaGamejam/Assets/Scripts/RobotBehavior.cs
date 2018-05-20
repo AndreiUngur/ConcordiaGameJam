@@ -1,29 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RobotBehavior : MonoBehaviour {
 	// MOVING
 	public float speed;
 	private Vector2 lastPos;
+    private bool isFacingRight = true;
 	
 	// ATTACKING
 	public GameObject bullet;
 	public GameObject ice;
 	public GameObject wind;
 	public int windSpeed;
-	public float damage = 0.1f;
+	public float damage;
 	private bool isDead;
 
-	// CAMERA
+	// CAMERA & UI
+	public GameObject canvasUI;
+	private Text canvasText;
 	private Camera cam;
-	
+	private string[] powers;
+
 	// ROBOT
+	public float maxHealth;
 	private Rigidbody2D robot;
+    private SpriteRenderer spriteRenderer;
 	private GameObject healthbar;
 	private int nextUpdate=1;
 	private bool following;
-	
+	private int state;
+		
 	// PLAYER
 	private GameObject playerObject;
 	private Transform player;
@@ -163,12 +171,44 @@ public class RobotBehavior : MonoBehaviour {
 	}
 	// ----------------------------------------------------------------------
 
+	// Goes to one of the two sides of the screen at random -----------------
+	private static void randomlyMoveToTheSide(Transform transform, Rigidbody2D robot, float speed)
+	{
+		bool left = Mathf.FloorToInt(Random.value*2) == 0;
+		if(left)
+		{
+			MoveLeft(transform, robot, speed * 0.8f);
+		}
+		else
+		{
+			MoveRight(transform, robot, speed * 0.8f);
+		}
+	}
+
+	// Heals until the HP bar is back to full --------------------------------
+	private static bool healUntilAlive(GameObject healthbar, float healingSpeed, float maxHealth)
+	{
+		healthbar.transform.localScale = new Vector2(healthbar.transform.localScale.x + healingSpeed, healthbar.transform.localScale.y);
+		if(healthbar.transform.localScale.x >= maxHealth)
+		{
+			// Considered dead until full HP
+			return false;
+		}
+		// Considered alive
+		return true;
+	}
+
 	// BELOW ARE UNITY FUNCTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	void Start ()
 	{
 		//GENERIC
+		canvasUI.SetActive(false);
+		canvasText = canvasUI.GetComponent<Canvas>().GetComponentInChildren<Text>();
 		robot = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+		state = 0;
+		powers = new string[] {"The robot can shoot rockets!", "The robot can now shake the earth itself!", "Frozen rain will fall on the robot's command!", "Mother nature blows strong gusts of wind that don't affect the robot's strong frame!"};
 		
 		// MOVEMENT
 		lastPos = cam.WorldToViewportPoint(robot.position);
@@ -186,46 +226,64 @@ public class RobotBehavior : MonoBehaviour {
     {
         // Is this a shot?
         GameObject other = otherCollider.gameObject;
-        if (other.tag == "playerBullet")
+        if (other.tag == "playerBullet" && !isDead)
         {
-			if(healthbar.transform.localScale.x <= 0.0f)
+			healthbar.transform.localScale = new Vector2(healthbar.transform.localScale.x - damage, healthbar.transform.localScale.y);
+        	if(healthbar.transform.localScale.x <= 0.0f)
 			{
 				Debug.Log("Robot got KILLED.");
 				isDead = true;
-				return;
 			}
-			healthbar.transform.localScale = new Vector2(healthbar.transform.localScale.x - damage, healthbar.transform.localScale.y);
-        }
+		}
     }
 
 	// Update is called once per frame
 	void Update ()
 	{
-		// Become ragdoll if dead
-		if(isDead)
+		// Robot died at an earlier phase, he's not done fighting !!
+		Debug.Log("State" + state);
+		if(isDead && state <=3)
+		{
+			Debug.Log("Stage complete");
+			randomlyMoveToTheSide(transform, robot, speed*3);
+			isDead = healUntilAlive(healthbar, 1.0f/(5.0f*20.0f), maxHealth);
+			// Robot came back to full HP ! Next phase of the battle starts
+			if(!isDead)
+			{
+				// Pause the game to warn the user about the state change
+				canvasUI.SetActive(true);
+				canvasText.text = "Mother Nature has healed the robot and granted it new powers! "+powers[state+1];
+				Time.timeScale = 0.0f;
+				Debug.Log("Updating state");
+				state += 1;
+			}
+			return;
+		}
+		// Robot died at his last phase... sadly he's GONE.
+		else if(isDead && state > 3)
 		{
 			Debug.Log("Robot died. :(");
-			Physics2D.IgnoreCollision(playerObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+			Physics2D.IgnoreCollision(playerObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
 			return;
 		}
 
 		// Randomly determine if it's time to shoot
-		if (attackTime(120, "rocket"))
+		if (attackTime(120, "rocket") && !isDead)
 		{
 			shootBasic(robot, player, bullet);
 		}
 
-		if(attackTime(120, "earthquake"))
+		if(attackTime(120, "earthquake") && state > 0 && !isDead)
 		{
 			earthquake();
 		}
 
-		if(attackTime(120, "ice"))
+		if(attackTime(120, "ice") && state > 1 && !isDead)
 		{
 			iceRain(playerObject, 6, ice);
 		}
 		
-		if(attackTime(120, "wind"))
+		if(attackTime(120, "wind") && state > 2 && !isDead)
 		{
 			windBlow(wind, windSpeed);
 		}
@@ -237,15 +295,7 @@ public class RobotBehavior : MonoBehaviour {
 		}
 		else
 		{
-			bool left = Mathf.FloorToInt(Random.value*2) == 0;
-			if(left)
-			{
-				MoveLeft(transform, robot, speed * 0.8f);
-			}
-			else
-			{
-				MoveRight(transform, robot, speed * 0.8f);
-			}
+			randomlyMoveToTheSide(transform, robot, speed);
 		}
 
 		// Below code is EXPERIMENTAL and NOT USED YET
@@ -272,5 +322,13 @@ public class RobotBehavior : MonoBehaviour {
 			*/
 		//}
 		lastPos = cameraPos;
+
+        // Always make sprite face player
+        spriteRenderer.flipX = !isFacingRight;
+	}
+
+	void FixedUpdate()
+	{
+        isFacingRight = (transform.position.x < player.position.x);
 	}
 }
