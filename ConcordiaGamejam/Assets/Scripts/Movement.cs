@@ -152,7 +152,6 @@ public class Movement : MonoBehaviour {
 
     public void die()
     {
-        Debug.Log("YOU DIED");
         SceneManager.LoadScene("LOSE");
 		//SceneManager.SetActiveScene("LOSE");
 		SceneManager.UnloadScene("MainScene");

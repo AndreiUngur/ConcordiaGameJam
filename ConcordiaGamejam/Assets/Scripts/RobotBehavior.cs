@@ -95,7 +95,6 @@ public class RobotBehavior : MonoBehaviour {
 		int randomNumber = Mathf.RoundToInt(Random.value*frequency);
 		if(randomNumber == 1)
 		{
-			Debug.Log(attackType);
 			return true;
 		}
 		return false;
@@ -225,7 +224,6 @@ public class RobotBehavior : MonoBehaviour {
 			healthbar.transform.localScale = new Vector2(healthbar.transform.localScale.x - damage, healthbar.transform.localScale.y);
         	if(healthbar.transform.localScale.x <= 0.0f)
 			{
-				Debug.Log("Robot got KILLED.");
 				isDead = true;
 			}
 		}
@@ -242,7 +240,6 @@ public class RobotBehavior : MonoBehaviour {
 		// Robot died at an earlier phase, he's not done fighting !!
 		if(isDead && state <=3)
 		{
-			Debug.Log("Stage complete");
 			randomlyMoveToTheSide(transform, robot, speed*3);
 			isDead = healUntilAlive(healthbar, 1.0f/(5.0f*20.0f), maxHealth);
 			// Robot came back to full HP ! Next phase of the battle starts
@@ -260,14 +257,12 @@ public class RobotBehavior : MonoBehaviour {
 					canvasText.text = "Mother Nature has healed the robot and granted it new powers! "+powers[state];
 				}
 				Time.timeScale = 0.0f;
-				Debug.Log("Updating state");
 			}
 			return;
 		}
 		// Robot died at his last phase... sadly he's GONE.
 		else if(isDead && state > 3)
 		{
-			Debug.Log("Robot died. :(");
 			Physics2D.IgnoreCollision(playerObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
 			SceneManager.LoadScene("WIN");
 			SceneManager.UnloadScene("MainScene");
@@ -312,7 +307,6 @@ public class RobotBehavior : MonoBehaviour {
 
 		Vector2 cameraPos = cam.WorldToViewportPoint(player.position);
 		if(Time.time>=nextUpdate){
-			Debug.Log(Time.time+">="+nextUpdate);
             // Change the next update (current second+1)
             nextUpdate=Mathf.FloorToInt(Time.time)+Mathf.FloorToInt(5*Random.value)+3;
 			following = !following;
