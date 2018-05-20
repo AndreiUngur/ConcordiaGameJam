@@ -238,7 +238,7 @@ public class RobotBehavior : MonoBehaviour {
 	void Update ()
 	{
 		// Robot died at an earlier phase, he's not done fighting !!
-		if(isDead && state <=3)
+		if(isDead && state <3)
 		{
 			randomlyMoveToTheSide(transform, robot, speed*3);
 			isDead = healUntilAlive(healthbar, 1.0f/(5.0f*20.0f), maxHealth);
@@ -261,7 +261,8 @@ public class RobotBehavior : MonoBehaviour {
 			return;
 		}
 		// Robot died at his last phase... sadly he's GONE.
-		else if(isDead && state > 3)
+		
+		if(isDead && state >= 3)
 		{
 			Physics2D.IgnoreCollision(playerObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
 			SceneManager.LoadScene("WIN");
