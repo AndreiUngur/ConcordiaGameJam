@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class RobotBehavior : MonoBehaviour {
 	// MOVING
-	public float speed;
+	public float speed = 0.5f;
+    public static float sideSpeed = 0.8f;
 	private Vector2 lastPos;
     private bool isFacingRight = true;
 	
@@ -93,7 +95,6 @@ public class RobotBehavior : MonoBehaviour {
 		int randomNumber = Mathf.RoundToInt(Random.value*frequency);
 		if(randomNumber == 1)
 		{
-			Debug.Log(attackType);
 			return true;
 		}
 		return false;
@@ -119,16 +120,6 @@ public class RobotBehavior : MonoBehaviour {
 		GameObject mainCamera = GameObject.Find("Main Camera");
 		CameraShake camShakeScript = mainCamera.GetComponent<CameraShake>();
 		camShakeScript.shakeDuration = 1.0f;
-		/*
-		I thought this would work but it doesn't. 
-		Debug.Log("EARTHQUAKE!!!!!");
-		GameObject[] floorTiles = GameObject.FindGameObjectsWithTag("floorTile");
-        foreach (GameObject tile in floorTiles)
-        {
-			Rigidbody2D tileRigidbody = tile.GetComponent<Rigidbody2D>();
-			tileRigidbody.velocity = tile.transform.up * 5.0f;
-        }
-		*/
 	}
 
 	// 3. Ice
@@ -141,11 +132,11 @@ public class RobotBehavior : MonoBehaviour {
 			float randomPos;
 			if (isNegative)
 			{
-				randomPos = Random.value*5;
+				randomPos = Random.value*10;
 			}
 			else
 			{
-				randomPos = Random.value * (-5);
+				randomPos = Random.value * (-10);
 			}
 			GameObject icicle = (GameObject)Instantiate (ice, new Vector2(player.transform.position.x+randomPos,6), Quaternion.Euler(0,0,0));
 		}	
@@ -177,11 +168,11 @@ public class RobotBehavior : MonoBehaviour {
 		bool left = Mathf.FloorToInt(Random.value*2) == 0;
 		if(left)
 		{
-			MoveLeft(transform, robot, speed * 0.8f);
+			MoveLeft(transform, robot, sideSpeed);
 		}
 		else
 		{
-			MoveRight(transform, robot, speed * 0.8f);
+			MoveRight(transform, robot, sideSpeed);
 		}
 	}
 
@@ -228,11 +219,11 @@ public class RobotBehavior : MonoBehaviour {
         GameObject other = otherCollider.gameObject;
         if (other.tag == "playerBullet" && !isDead)
         {
+			other.SetActive(false);
             spriteRenderer.color = Color.red;
 			healthbar.transform.localScale = new Vector2(healthbar.transform.localScale.x - damage, healthbar.transform.localScale.y);
         	if(healthbar.transform.localScale.x <= 0.0f)
 			{
-				Debug.Log("Robot got KILLED.");
 				isDead = true;
 			}
 		}
@@ -247,10 +238,8 @@ public class RobotBehavior : MonoBehaviour {
 	void Update ()
 	{
 		// Robot died at an earlier phase, he's not done fighting !!
-		Debug.Log("State" + state);
 		if(isDead && state <=3)
 		{
-			Debug.Log("Stage complete");
 			randomlyMoveToTheSide(transform, robot, speed*3);
 			isDead = healUntilAlive(healthbar, 1.0f/(5.0f*20.0f), maxHealth);
 			// Robot came back to full HP ! Next phase of the battle starts
@@ -258,18 +247,25 @@ public class RobotBehavior : MonoBehaviour {
 			{
 				// Pause the game to warn the user about the state change
 				canvasUI.SetActive(true);
-				canvasText.text = "Mother Nature has healed the robot and granted it new powers! "+powers[state+1];
-				Time.timeScale = 0.0f;
-				Debug.Log("Updating state");
 				state += 1;
+				if(state == 3)
+				{
+					canvasText.text = powers[state];
+				}	
+				else
+				{
+					canvasText.text = "Mother Nature has healed the robot and granted it new powers! "+powers[state];
+				}
+				Time.timeScale = 0.0f;
 			}
 			return;
 		}
 		// Robot died at his last phase... sadly he's GONE.
 		else if(isDead && state > 3)
 		{
-			Debug.Log("Robot died. :(");
 			Physics2D.IgnoreCollision(playerObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+			SceneManager.LoadScene("WIN");
+			SceneManager.UnloadScene("MainScene");
 			return;
 		}
 
@@ -284,7 +280,7 @@ public class RobotBehavior : MonoBehaviour {
 			earthquake();
 		}
 
-		if(attackTime(120, "ice") && state > 1 && !isDead)
+		if(attackTime(200, "ice") && state > 1 && !isDead)
 		{
 			iceRain(playerObject, 6, ice);
 		}
@@ -311,7 +307,6 @@ public class RobotBehavior : MonoBehaviour {
 
 		Vector2 cameraPos = cam.WorldToViewportPoint(player.position);
 		if(Time.time>=nextUpdate){
-			Debug.Log(Time.time+">="+nextUpdate);
             // Change the next update (current second+1)
             nextUpdate=Mathf.FloorToInt(Time.time)+Mathf.FloorToInt(5*Random.value)+3;
 			following = !following;

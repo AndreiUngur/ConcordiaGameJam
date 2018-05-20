@@ -12,6 +12,7 @@ TagManager:
   - floorTile
   - MainCanvas
   - menuCanvas
+  - platform
   layers:
   - Default
   - TransparentFX

@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 61413974949300220}
   - component: {fileID: 50230271790846644}
   - component: {fileID: 114512176762031004}
+  - component: {fileID: 114978361618226722}
   m_Layer: 0
   m_Name: basicRobotShot
   m_TagString: robotBullet
@@ -169,6 +170,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+--- !u!114 &114978361618226722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1791100109571726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150d5b4b3b0b8c541a0895cb50b1cd60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212662062443215678
 SpriteRenderer:
   m_ObjectHideFlags: 1
