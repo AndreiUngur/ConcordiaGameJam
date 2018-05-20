@@ -7,9 +7,11 @@ public class RobotBehavior : MonoBehaviour {
 	public float speed;
 	private Vector2 lastPos;
 	
-	// SHOOTING
+	// ATTACKING
 	public GameObject bullet;
-	public int shootFreq;
+	public GameObject ice;
+	public GameObject wind;
+	public int windSpeed;
 	public float damage = 0.1f;
 	private bool isDead;
 
@@ -77,18 +79,22 @@ public class RobotBehavior : MonoBehaviour {
 	}
 	// ----------------------------------------------------------------------
 
-	// Determine if it's the time to shoot & Shoot --------------------------
-	private static bool shootingTime()
+	// Determine if it's the time for an attack --------------------------
+	private static bool attackTime(int frequency, string attackType)
 	{
-		int randomNumber = Mathf.RoundToInt(Random.value*120);
+		int randomNumber = Mathf.RoundToInt(Random.value*frequency);
 		if(randomNumber == 1)
 		{
-			Debug.Log("Shooting Time!");
+			Debug.Log(attackType);
 			return true;
 		}
 		return false;
 	}
+	// ----------------------------------------------------------------------
 
+	// Attack handlers ------------------------------------------------------
+
+	// 1. Shoot rockets
 	private static void shootBasic(Rigidbody2D robot, Transform player, GameObject bullet)
 	{
         Vector2 v1 = player.transform.position;
@@ -100,17 +106,6 @@ public class RobotBehavior : MonoBehaviour {
 
 
 	// 2. Earthquake
-	private static bool earthquakeTime()
-	{
-		int randomNumber = Mathf.RoundToInt(Random.value*120);
-		if(randomNumber == 1)
-		{
-			Debug.Log("Earthquake Time!");
-			return true;
-		}
-		return false;
-	}
-
 	private static void earthquake()
 	{
 		GameObject mainCamera = GameObject.Find("Main Camera");
@@ -126,6 +121,45 @@ public class RobotBehavior : MonoBehaviour {
 			tileRigidbody.velocity = tile.transform.up * 5.0f;
         }
 		*/
+	}
+
+	// 3. Ice
+	private static void iceRain(GameObject player, int maxIcicles, GameObject ice)
+	{
+		int icicleCount = Mathf.RoundToInt(Random.value*maxIcicles);
+		for(int i=0; i<icicleCount; i++)
+		{
+			bool isNegative = Mathf.FloorToInt(Random.value*2)==0;
+			float randomPos;
+			if (isNegative)
+			{
+				randomPos = Random.value*5;
+			}
+			else
+			{
+				randomPos = Random.value * (-5);
+			}
+			GameObject icicle = (GameObject)Instantiate (ice, new Vector2(player.transform.position.x+randomPos,6), Quaternion.Euler(0,0,0));
+		}	
+	}
+
+	private static void windBlow(GameObject wind, float windSpeed)
+	{
+		float startingPos = -3.5f + 8.0f*Random.value;
+		
+		bool isNegative = Mathf.FloorToInt(Random.value*2)==0;
+		if(isNegative)
+		{
+			GameObject windGust = (GameObject)Instantiate (wind, new Vector2(-10,startingPos), Quaternion.Euler(0,0,0));
+			Rigidbody2D windGustRbd = windGust.GetComponent<Rigidbody2D>();
+			windGustRbd.velocity = new Vector2(windSpeed, windGustRbd.velocity.y); 
+		}
+		else
+		{
+			GameObject windGust = (GameObject)Instantiate (wind, new Vector2(10,startingPos), Quaternion.Euler(0,0,0));
+			Rigidbody2D windGustRbd = windGust.GetComponent<Rigidbody2D>();
+			windGustRbd.velocity = new Vector2(-windSpeed, windGustRbd.velocity.y); 
+		}
 	}
 	// ----------------------------------------------------------------------
 
@@ -176,15 +210,26 @@ public class RobotBehavior : MonoBehaviour {
 		}
 
 		// Randomly determine if it's time to shoot
-		if (shootingTime())
+		if (attackTime(120, "rocket"))
 		{
 			shootBasic(robot, player, bullet);
 		}
 
-		if(earthquakeTime())
+		if(attackTime(120, "earthquake"))
 		{
 			earthquake();
 		}
+
+		if(attackTime(120, "ice"))
+		{
+			iceRain(playerObject, 6, ice);
+		}
+		
+		if(attackTime(120, "wind"))
+		{
+			windBlow(wind, windSpeed);
+		}
+
 		// "Basic" AI that follows the player
 		if(following)
 		{
