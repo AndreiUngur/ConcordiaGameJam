@@ -15,7 +15,7 @@ public class RobotBehavior : MonoBehaviour {
 	public GameObject wind;
 	public int windSpeed;
 	public float damage;
-	private bool isDead;
+    private bool isDead;
 
 	// CAMERA & UI
 	public GameObject canvasUI;
@@ -219,6 +219,7 @@ public class RobotBehavior : MonoBehaviour {
         if (other.tag == "playerBullet" && !isDead)
         {
 			other.SetActive(false);
+            spriteRenderer.color = Color.red;
 			healthbar.transform.localScale = new Vector2(healthbar.transform.localScale.x - damage, healthbar.transform.localScale.y);
         	if(healthbar.transform.localScale.x <= 0.0f)
 			{
@@ -226,6 +227,11 @@ public class RobotBehavior : MonoBehaviour {
 				isDead = true;
 			}
 		}
+    }
+
+    void OnTriggerExit2D(Collider2D otherCollider)
+    {
+        spriteRenderer.color = Color.white;
     }
 
 	// Update is called once per frame

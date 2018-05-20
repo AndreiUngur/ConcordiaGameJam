@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Movement : MonoBehaviour {
+public class Movement : MonoBehaviour { 
     public const int max_health = 3;
     public int currentHealth;
 
@@ -14,8 +14,10 @@ public class Movement : MonoBehaviour {
     public float jumpForce = 300f;
     public static bool isFacingRight = true;
     public static Vector2 direction = new Vector2(0,0);
-    public bool isKnockedBack;
 
+    private Knockback kb;
+
+    public bool isKnockedBack;
 
     private Rigidbody2D rb2d;
     private SpriteRenderer spriteRenderer;
@@ -26,6 +28,8 @@ public class Movement : MonoBehaviour {
     private float groundRadius = 0.2f;
     private int aimLevel = 0;
 
+    public bool triggered;
+
     private bool isDead = false;
 
 	// Use this for initialization
@@ -35,6 +39,8 @@ public class Movement : MonoBehaviour {
         animator = GetComponent<Animator>();
 
         currentHealth = max_health;
+
+        kb = gameObject.GetComponentInChildren<Knockback>();
 	}
 
 	void Update()
@@ -86,7 +92,6 @@ public class Movement : MonoBehaviour {
 
         direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
     
-        //Debug.Log(direction.y);
         if (direction.y > 0.01) {
             aimLevel = 1;
         } else if (direction.y < -0.01) {
@@ -97,20 +102,47 @@ public class Movement : MonoBehaviour {
 	}
 
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Damager>() != null && iframes <= 0)
+        {
+            Damager damager = collision.gameObject.GetComponent<Damager>();
+
+            damage(damager, collision);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<Damager>() != null && iframes <= 0)
         {
             Damager damager = collision.gameObject.GetComponent<Damager>();
 
-            damage(damager);
+            damage(damager, collision);
         }
     }
 
-    public void damage(Damager damager)
+    public void damage(Damager damager, Collider2D collision)
     {
+
+        //don't keep this
         currentHealth -= damager.damage;
-        iframes = iframeDuration;
+
+        if (collision.gameObject.tag == "Robot")
+        {
+
+            if (kb.triggered)
+            {
+                iframes = iframeDuration;
+                kb.triggered = false;
+            } else
+            {
+                triggered = true;
+            }
+        } else
+        {
+            iframes = iframeDuration;
+        }
 
         if (currentHealth <= 0)
         {
