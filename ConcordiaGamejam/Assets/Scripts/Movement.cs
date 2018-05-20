@@ -125,7 +125,6 @@ public class Movement : MonoBehaviour {
     public void damage(Damager damager, Collider2D collision)
     {
 
-        //don't keep this
         currentHealth -= damager.damage;
 
         if (collision.gameObject.tag == "Robot")
