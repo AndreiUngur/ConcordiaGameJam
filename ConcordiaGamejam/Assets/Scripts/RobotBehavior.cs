@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class RobotBehavior : MonoBehaviour {
 	// MOVING
-	public float speed;
+	public float speed = 0.5f;
+    public static float sideSpeed = 0.8f;
 	private Vector2 lastPos;
     private bool isFacingRight = true;
 	
@@ -167,11 +168,11 @@ public class RobotBehavior : MonoBehaviour {
 		bool left = Mathf.FloorToInt(Random.value*2) == 0;
 		if(left)
 		{
-			MoveLeft(transform, robot, speed * 0.8f);
+			MoveLeft(transform, robot, sideSpeed);
 		}
 		else
 		{
-			MoveRight(transform, robot, speed * 0.8f);
+			MoveRight(transform, robot, sideSpeed);
 		}
 	}
 
