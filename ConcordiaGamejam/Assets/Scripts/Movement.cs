@@ -3,41 +3,75 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour {
+    public const int max_health = 3;
+    public int currentHealth;
+
+    public float iframeDuration = 2f;
+    public float iframes = 0;
+
     public float maxSpeed = 10f;
     public float jumpForce = 300f;
     public static bool isFacingRight = true;
     public static Vector2 direction = new Vector2(0,0);
+    public bool isKnockedBack;
 
     private Rigidbody2D rb2d;
     private SpriteRenderer spriteRenderer;
     public Transform GroundCheck;
     public LayerMask groundLayer;
-    private bool isGrounded;
+    public bool isGrounded;
     private float groundRadius = 0.2f;
+
+    private bool isDead = false;
 
 	// Use this for initialization
 	void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        currentHealth = max_health;
 	}
 
 	void Update()
 	{
-        if (isGrounded && Input.GetKeyDown(KeyCode.X)) {
-            rb2d.AddForce(new Vector2(0, jumpForce));
-        }
 
         spriteRenderer.color = isFacingRight ? Color.cyan : Color.blue;
+
+
+        if (iframes > 0)
+        {
+            iframes -= Time.deltaTime;
+            spriteRenderer.color = Color.green;
+        }
+
+        if (isDead)
+        {
+            spriteRenderer.color = Color.grey;
+        }
 
 	}
 
 	void FixedUpdate () {
 
+        if (isDead)
+        {
+            return;
+        }
+
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, groundRadius, groundLayer);
 
         // side to side movement
         float moveH = Input.GetAxis("Horizontal");
-        rb2d.velocity = new Vector2(moveH*maxSpeed, rb2d.velocity.y);
+
+        if (!isKnockedBack)
+        {
+            rb2d.velocity = new Vector2(moveH * maxSpeed, rb2d.velocity.y);
+        }
+
+        if (isGrounded && Input.GetKeyDown(KeyCode.X))
+        {
+            rb2d.AddForce(new Vector2(0, jumpForce));
+        }
 
         if (isFacingRight && moveH < 0) {
             isFacingRight = false;
@@ -47,4 +81,32 @@ public class Movement : MonoBehaviour {
 
         direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
 	}
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Damager>() != null && iframes <= 0)
+        {
+            Damager damager = collision.gameObject.GetComponent<Damager>();
+
+            damage(damager);
+        }
+    }
+
+    public void damage(Damager damager)
+    {
+        currentHealth -= damager.damage;
+        iframes = iframeDuration;
+
+        if (currentHealth <= 0)
+        {
+            die();
+        }
+    }
+
+    public void die()
+    {
+        Debug.Log("YOU DIED");
+        isDead = true;
+    }
 }
