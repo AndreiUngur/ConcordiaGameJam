@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 
 public class Movement : MonoBehaviour { 
-    public const int max_health = 3;
+    public const int max_health = 5;
     public int currentHealth;
 
     public float iframeDuration = 2f;
