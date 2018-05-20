@@ -39,6 +39,11 @@ public class Movement : MonoBehaviour {
 
 	void Update()
     {
+        if (iframes > 0)
+        {
+            iframes -= Time.deltaTime;
+        }
+
         spriteRenderer.flipX = !isFacingRight;
         animator.SetBool("isMoving", direction.magnitude > 0.01);
         animator.SetBool("isGrounded", isGrounded);
@@ -58,6 +63,7 @@ public class Movement : MonoBehaviour {
         // side to side movement
         float moveH = Input.GetAxis("Horizontal");
 
+        //no moving while getting knocked back
         if (!isKnockedBack)
         {
             rb2d.velocity = new Vector2(moveH * maxSpeed, rb2d.velocity.y);

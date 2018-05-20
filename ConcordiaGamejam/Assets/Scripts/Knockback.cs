@@ -5,17 +5,21 @@ using UnityEngine;
 public class Knockback : MonoBehaviour {
 
     public float kbScale = 40f;
+    public SpriteRenderer testSprite;
 
     GameObject knockback;
     GameObject Player;
     Rigidbody2D rbd;
     Movement movement;
 
-    float iframeCounter;
-    public float iframeLength = 1.5f;
+
+    float mindelay = 0.2f;
+    float delayElapsed = 0f;
 
 	// Use this for initialization
 	void Start () {
+        testSprite.color = Color.red;
+
         knockback = gameObject;
         Player = knockback.transform.parent.gameObject;
         rbd = Player.GetComponent<Rigidbody2D>();
@@ -24,20 +28,27 @@ public class Knockback : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (iframeCounter > 0)
+        if (delayElapsed > 0)
         {
-            iframeCounter -= Time.deltaTime;
+            delayElapsed -= Time.deltaTime;
         }
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void FixedUpdate()
     {
-        if (movement.isGrounded && movement.isKnockedBack)
+        if (movement.isGrounded && movement.isKnockedBack && delayElapsed <= 0)
         {
             movement.isKnockedBack = false;
-        }
+            testSprite.color = Color.red;
 
-        if (collision.gameObject.tag == "Robot" && !movement.isKnockedBack && iframeCounter <= 0)
+        }
+    }
+
+    //this is seems to sometimes just not be called 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
+        if (collision.gameObject.tag == "Robot" && !movement.isKnockedBack && movement.iframes <= 0)
         {
             bool hitOnRight = collision.gameObject.transform.position.x - gameObject.transform.position.x > 0;
             Vector2 kbDir = new Vector2(hitOnRight ? -1 : 1, 1).normalized;
@@ -46,8 +57,8 @@ public class Knockback : MonoBehaviour {
             rbd.AddForce(kbDir * kbScale, ForceMode2D.Impulse);
 
             movement.isKnockedBack = true;
-
-            iframeCounter = iframeLength;
+            testSprite.color = Color.green;
+            delayElapsed = mindelay;
         }
     }
 }
