@@ -14,7 +14,7 @@ public class RobotBehavior : MonoBehaviour {
 	public GameObject ice;
 	public GameObject wind;
 	public int windSpeed;
-	public float damage = 0.1f;
+	public float damage;
 	private bool isDead;
 
 	// CAMERA & UI
@@ -24,13 +24,14 @@ public class RobotBehavior : MonoBehaviour {
 	private string[] powers;
 
 	// ROBOT
+	public float maxHealth;
 	private Rigidbody2D robot;
     private SpriteRenderer spriteRenderer;
 	private GameObject healthbar;
 	private int nextUpdate=1;
 	private bool following;
 	private int state;
-	
+		
 	// PLAYER
 	private GameObject playerObject;
 	private Transform player;
@@ -185,10 +186,10 @@ public class RobotBehavior : MonoBehaviour {
 	}
 
 	// Heals until the HP bar is back to full --------------------------------
-	private static bool healUntilAlive(GameObject healthbar, float healingSpeed)
+	private static bool healUntilAlive(GameObject healthbar, float healingSpeed, float maxHealth)
 	{
 		healthbar.transform.localScale = new Vector2(healthbar.transform.localScale.x + healingSpeed, healthbar.transform.localScale.y);
-		if(healthbar.transform.localScale.x >= 1.0f)
+		if(healthbar.transform.localScale.x >= maxHealth)
 		{
 			// Considered dead until full HP
 			return false;
@@ -245,7 +246,7 @@ public class RobotBehavior : MonoBehaviour {
 		{
 			Debug.Log("Stage complete");
 			randomlyMoveToTheSide(transform, robot, speed*3);
-			isDead = healUntilAlive(healthbar, 1.0f/(5.0f*30.0f));
+			isDead = healUntilAlive(healthbar, 1.0f/(5.0f*20.0f), maxHealth);
 			// Robot came back to full HP ! Next phase of the battle starts
 			if(!isDead)
 			{

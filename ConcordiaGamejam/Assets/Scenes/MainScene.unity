@@ -351,6 +351,16 @@ Prefab:
       propertyPath: m_Size.x
       value: 7.8
       objectReference: {fileID: 0}
+    - target: {fileID: 114617567935747638, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: damage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114617567935747638, guid: 3588c77c46a722f459ced2b9c34ef30d,
+        type: 2}
+      propertyPath: maxHealth
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3588c77c46a722f459ced2b9c34ef30d, type: 2}
   m_IsPrefabParent: 0
@@ -1807,7 +1817,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kbScale: 40
-  testSprite: {fileID: 0}
 --- !u!61 &1640997633
 BoxCollider2D:
   m_ObjectHideFlags: 0
