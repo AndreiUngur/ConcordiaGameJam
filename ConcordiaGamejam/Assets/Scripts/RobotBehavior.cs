@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RobotBehavior : MonoBehaviour {
 	// MOVING
@@ -15,9 +16,12 @@ public class RobotBehavior : MonoBehaviour {
 	public float damage = 0.1f;
 	private bool isDead;
 
-	// CAMERA
+	// CAMERA & UI
+	public GameObject canvasUI;
+	private Text canvasText;
 	private Camera cam;
-	
+	private string[] powers;
+
 	// ROBOT
 	private Rigidbody2D robot;
 	private GameObject healthbar;
@@ -185,19 +189,22 @@ public class RobotBehavior : MonoBehaviour {
 		if(healthbar.transform.localScale.x >= 1.0f)
 		{
 			// Considered dead until full HP
-			return true;
+			return false;
 		}
 		// Considered alive
-		return false;
+		return true;
 	}
 
 	// BELOW ARE UNITY FUNCTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	void Start ()
 	{
 		//GENERIC
+		canvasUI.SetActive(false);
+		canvasText = canvasUI.GetComponent<Canvas>().GetComponentInChildren<Text>();
 		robot = GetComponent<Rigidbody2D>();
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 		state = 0;
+		powers = new string[] {"The robot can shoot rockets!", "The robot can now shake the earth itself!", "Frozen rain will fall on the robot's command!", "Mother nature blows strong gusts of wind that don't affect the robot's strong frame!"};
 		
 		// MOVEMENT
 		lastPos = cam.WorldToViewportPoint(robot.position);
@@ -218,13 +225,12 @@ public class RobotBehavior : MonoBehaviour {
         if (other.tag == "playerBullet" && !isDead)
         {
 			healthbar.transform.localScale = new Vector2(healthbar.transform.localScale.x - damage, healthbar.transform.localScale.y);
-			if(healthbar.transform.localScale.x <= 0.0f)
+        	if(healthbar.transform.localScale.x <= 0.0f)
 			{
 				Debug.Log("Robot got KILLED.");
 				isDead = true;
-				return;
 			}
-        }
+		}
     }
 
 	// Update is called once per frame
@@ -234,14 +240,16 @@ public class RobotBehavior : MonoBehaviour {
 		Debug.Log("State" + state);
 		if(isDead && state <=3)
 		{
-			Time.timeScale = 0.0f;
 			Debug.Log("Stage complete");
-			randomlyMoveToTheSide(transform, robot, speed);
-			bool wasDead = isDead;
-			isDead = healUntilAlive(healthbar, 0.1f);
+			randomlyMoveToTheSide(transform, robot, speed*3);
+			isDead = healUntilAlive(healthbar, 1.0f/(5.0f*30.0f));
 			// Robot came back to full HP ! Next phase of the battle starts
-			if(wasDead && !isDead)
+			if(!isDead)
 			{
+				// Pause the game to warn the user about the state change
+				canvasUI.SetActive(true);
+				canvasText.text = "Mother Nature has healed the robot and granted it new powers! "+powers[state+1];
+				Time.timeScale = 0.0f;
 				Debug.Log("Updating state");
 				state += 1;
 			}

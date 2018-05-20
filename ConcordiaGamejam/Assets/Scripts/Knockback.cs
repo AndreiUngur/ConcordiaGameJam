@@ -36,11 +36,11 @@ public class Knockback : MonoBehaviour {
 
     private void FixedUpdate()
     {
+
         if (movement.isGrounded && movement.isKnockedBack && delayElapsed <= 0)
         {
             movement.isKnockedBack = false;
             testSprite.color = Color.red;
-
         }
     }
 
