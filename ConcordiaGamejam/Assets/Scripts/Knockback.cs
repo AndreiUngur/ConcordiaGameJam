@@ -5,7 +5,6 @@ using UnityEngine;
 public class Knockback : MonoBehaviour {
 
     public float kbScale = 40f;
-    public SpriteRenderer testSprite;
 
     GameObject knockback;
     GameObject Player;
@@ -18,8 +17,6 @@ public class Knockback : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        testSprite.color = Color.red;
-
         knockback = gameObject;
         Player = knockback.transform.parent.gameObject;
         rbd = Player.GetComponent<Rigidbody2D>();
@@ -40,7 +37,6 @@ public class Knockback : MonoBehaviour {
         if (movement.isGrounded && movement.isKnockedBack && delayElapsed <= 0)
         {
             movement.isKnockedBack = false;
-            testSprite.color = Color.red;
         }
     }
 
@@ -57,7 +53,6 @@ public class Knockback : MonoBehaviour {
             rbd.AddForce(kbDir * kbScale, ForceMode2D.Impulse);
 
             movement.isKnockedBack = true;
-            testSprite.color = Color.green;
             delayElapsed = mindelay;
         }
     }
