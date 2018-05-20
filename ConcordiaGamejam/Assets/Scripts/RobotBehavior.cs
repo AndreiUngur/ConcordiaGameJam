@@ -119,16 +119,6 @@ public class RobotBehavior : MonoBehaviour {
 		GameObject mainCamera = GameObject.Find("Main Camera");
 		CameraShake camShakeScript = mainCamera.GetComponent<CameraShake>();
 		camShakeScript.shakeDuration = 1.0f;
-		/*
-		I thought this would work but it doesn't. 
-		Debug.Log("EARTHQUAKE!!!!!");
-		GameObject[] floorTiles = GameObject.FindGameObjectsWithTag("floorTile");
-        foreach (GameObject tile in floorTiles)
-        {
-			Rigidbody2D tileRigidbody = tile.GetComponent<Rigidbody2D>();
-			tileRigidbody.velocity = tile.transform.up * 5.0f;
-        }
-		*/
 	}
 
 	// 3. Ice
@@ -141,11 +131,11 @@ public class RobotBehavior : MonoBehaviour {
 			float randomPos;
 			if (isNegative)
 			{
-				randomPos = Random.value*5;
+				randomPos = Random.value*10;
 			}
 			else
 			{
-				randomPos = Random.value * (-5);
+				randomPos = Random.value * (-10);
 			}
 			GameObject icicle = (GameObject)Instantiate (ice, new Vector2(player.transform.position.x+randomPos,6), Quaternion.Euler(0,0,0));
 		}	
@@ -228,6 +218,7 @@ public class RobotBehavior : MonoBehaviour {
         GameObject other = otherCollider.gameObject;
         if (other.tag == "playerBullet" && !isDead)
         {
+			other.SetActive(false);
 			healthbar.transform.localScale = new Vector2(healthbar.transform.localScale.x - damage, healthbar.transform.localScale.y);
         	if(healthbar.transform.localScale.x <= 0.0f)
 			{
@@ -241,7 +232,6 @@ public class RobotBehavior : MonoBehaviour {
 	void Update ()
 	{
 		// Robot died at an earlier phase, he's not done fighting !!
-		Debug.Log("State" + state);
 		if(isDead && state <=3)
 		{
 			Debug.Log("Stage complete");
