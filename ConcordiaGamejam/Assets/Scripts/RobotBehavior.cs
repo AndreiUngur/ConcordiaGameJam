@@ -248,10 +248,17 @@ public class RobotBehavior : MonoBehaviour {
 			{
 				// Pause the game to warn the user about the state change
 				canvasUI.SetActive(true);
-				canvasText.text = "Mother Nature has healed the robot and granted it new powers! "+powers[state+1];
+				state += 1;
+				if(state == 3)
+				{
+					canvasText.text = powers[state];
+				}	
+				else
+				{
+					canvasText.text = "Mother Nature has healed the robot and granted it new powers! "+powers[state];
+				}
 				Time.timeScale = 0.0f;
 				Debug.Log("Updating state");
-				state += 1;
 			}
 			return;
 		}

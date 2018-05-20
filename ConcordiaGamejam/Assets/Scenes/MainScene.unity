@@ -1195,6 +1195,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isGrounded: 0
+  triggered: 0
 --- !u!114 &658460365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1761,7 +1762,6 @@ GameObject:
   - component: {fileID: 1640997631}
   - component: {fileID: 1640997633}
   - component: {fileID: 1640997632}
-  - component: {fileID: 1640997634}
   m_Layer: 0
   m_Name: Knockback
   m_TagString: Untagged
@@ -1794,6 +1794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kbScale: 40
+  triggered: 0
 --- !u!61 &1640997633
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1956,7 +1957,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-
 --- !u!1 &1778005589
 GameObject:
   m_ObjectHideFlags: 0
