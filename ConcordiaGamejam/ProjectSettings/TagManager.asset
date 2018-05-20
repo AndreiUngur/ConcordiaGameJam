@@ -9,6 +9,7 @@ TagManager:
   - robotHealth
   - Robot
   - Damaging
+  - floorTile
   layers:
   - Default
   - TransparentFX

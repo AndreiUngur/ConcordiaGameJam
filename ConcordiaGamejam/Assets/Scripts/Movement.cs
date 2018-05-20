@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Movement : MonoBehaviour {
     public const int max_health = 3;
     public int currentHealth;
@@ -15,12 +16,15 @@ public class Movement : MonoBehaviour {
     public static Vector2 direction = new Vector2(0,0);
     public bool isKnockedBack;
 
+
     private Rigidbody2D rb2d;
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
     public Transform GroundCheck;
     public LayerMask groundLayer;
     public bool isGrounded;
     private float groundRadius = 0.2f;
+    private int aimLevel = 0;
 
     private bool isDead = false;
 
@@ -28,28 +32,19 @@ public class Movement : MonoBehaviour {
 	void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
 
         currentHealth = max_health;
 	}
 
 	void Update()
-	{
+    {
+        spriteRenderer.flipX = !isFacingRight;
+        animator.SetBool("isMoving", direction.magnitude > 0.01);
+        animator.SetBool("isGrounded", isGrounded);
+        animator.SetInteger("aimLevel", aimLevel);
 
-        spriteRenderer.color = isFacingRight ? Color.cyan : Color.blue;
-
-
-        if (iframes > 0)
-        {
-            iframes -= Time.deltaTime;
-            spriteRenderer.color = Color.green;
-        }
-
-        if (isDead)
-        {
-            spriteRenderer.color = Color.grey;
-        }
-
-	}
+    }
 
 	void FixedUpdate () {
 
@@ -73,13 +68,26 @@ public class Movement : MonoBehaviour {
             rb2d.AddForce(new Vector2(0, jumpForce));
         }
 
-        if (isFacingRight && moveH < 0) {
+        if (isFacingRight && moveH < 0)
+        {
             isFacingRight = false;
-        } else if (!isFacingRight && moveH > 0) {
+
+        }
+        else if (!isFacingRight && moveH > 0)
+        {
             isFacingRight = true;
         }
 
         direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+    
+        Debug.Log(direction.y);
+        if (direction.y > 0.01) {
+            aimLevel = 1;
+        } else if (direction.y < -0.01) {
+            aimLevel = -1;
+        } else {
+            aimLevel = 0;
+        }
 	}
 
 
@@ -108,5 +116,6 @@ public class Movement : MonoBehaviour {
     {
         Debug.Log("YOU DIED");
         isDead = true;
+
     }
 }
