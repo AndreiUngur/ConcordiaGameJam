@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class RobotBehavior : MonoBehaviour {
 	// MOVING
@@ -268,6 +269,8 @@ public class RobotBehavior : MonoBehaviour {
 		{
 			Debug.Log("Robot died. :(");
 			Physics2D.IgnoreCollision(playerObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+			SceneManager.LoadScene("WIN");
+			SceneManager.UnloadScene("MainScene");
 			return;
 		}
 
@@ -282,7 +285,7 @@ public class RobotBehavior : MonoBehaviour {
 			earthquake();
 		}
 
-		if(attackTime(120, "ice") && state > 1 && !isDead)
+		if(attackTime(200, "ice") && state > 1 && !isDead)
 		{
 			iceRain(playerObject, 6, ice);
 		}

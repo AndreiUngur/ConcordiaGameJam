@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class Movement : MonoBehaviour { 
@@ -152,7 +153,9 @@ public class Movement : MonoBehaviour {
     public void die()
     {
         Debug.Log("YOU DIED");
+        SceneManager.LoadScene("LOSE");
+		//SceneManager.SetActiveScene("LOSE");
+		SceneManager.UnloadScene("MainScene");
         isDead = true;
-
     }
 }
