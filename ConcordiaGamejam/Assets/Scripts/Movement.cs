@@ -16,6 +16,7 @@ public class Movement : MonoBehaviour
     public LayerMask groundLayer;
     private bool isGrounded;
     private float groundRadius = 0.2f;
+    private int aimLevel = 0;
 
     // Use this for initialization
     void Start()
@@ -33,14 +34,14 @@ public class Movement : MonoBehaviour
         }
 
         spriteRenderer.flipX = !isFacingRight;
-        animator.SetBool("isFacingRight", isFacingRight);
+        animator.SetBool("isMoving", direction.magnitude > 0.01);
         animator.SetBool("isGrounded", isGrounded);
+        animator.SetInteger("aimLevel", aimLevel);
 
     }
 
     void FixedUpdate()
     {
-
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, groundRadius, groundLayer);
 
         // side to side movement
@@ -58,5 +59,13 @@ public class Movement : MonoBehaviour
         }
 
         direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+        Debug.Log(direction.y);
+        if (direction.y > 0.01) {
+            aimLevel = 1;
+        } else if (direction.y < -0.01) {
+            aimLevel = -1;
+        } else {
+            aimLevel = 0;
+        }
     }
 }
